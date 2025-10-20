@@ -14,7 +14,7 @@ import (
 
 
 func Profile(c *gin.Context) {
-	collection := database.GetCollection("user")
+	collection := database.GetUserCollection("user")
 
 
 	

@@ -20,7 +20,7 @@ func SignUp(c *gin.Context){
 	if err != nil {
 		log.Println(err.Error())
 	}
-	collection := database.GetCollection("user")
+	collection := database.GetUserCollection("user")
 
 	HashedPassword , err := bcrypt.GenerateFromPassword([]byte(data.Password) , bcrypt.DefaultCost) 
 	if err != nil {
@@ -65,7 +65,7 @@ func Login(c *gin.Context){
 		})
 	}
 	token := jwt.SignToken(req.Email)
-	collection := database.GetCollection("user")
+	collection := database.GetUserCollection("user")
 	var user models.User
 	err = collection.FindOne(context.TODO(), map[string]interface{}{"email": req.Email}).Decode(&user)
 	if err != nil {

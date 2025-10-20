@@ -11,34 +11,31 @@ import (
 )
 
 var db *mongo.Database
+var userCollection *mongo.Collection
 
 func ConnectDb() {
 	url := os.Getenv("MONGO_URL")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	
-	client, err := mongo.NewClient(options.Client().ApplyURI(url))
+	client, err := mongo.Connect(ctx  , options.Client().ApplyURI(url))
 	if err != nil {
 		log.Fatal("Error creating Mongo client:", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	if err := client.Connect(ctx); err != nil {
-		log.Fatal("Error connecting to MongoDB:", err)
-	}
+	userCollection = client.Database("gin_jwt_database").Collection("user")
+	
 
  
 
 	log.Println("✅ Connected to MongoDB")
 
-	db = client.Database("gin_jwt_database")
+	
 	
 	
 }
 
-func GetCollection(name string) *mongo.Collection {
-	if db == nil {
-		log.Fatal("Database not connected.")
-	}
-	return db.Collection(name)
+func GetUserCollection(name string) *mongo.Collection {
+	
+	return userCollection
 }

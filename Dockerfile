@@ -10,10 +10,11 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy the rest of the application code
+
 COPY . .
 
 # Build the Go app
-RUN go build -o main .
+RUN go build -o main.exe .
 
 # Start a new minimal image for running
 FROM alpine:latest
@@ -34,4 +35,4 @@ COPY --from=builder /app/.env .
 EXPOSE 3000
 
 # Command to run the executable
-CMD ["./main"]
+CMD ["./main.exe"]

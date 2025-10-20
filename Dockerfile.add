@@ -1,2 +1,0 @@
-# Copy the .env file from the build context to the runtime image
-COPY --from=builder /app/.env .
